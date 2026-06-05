@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kylee Remiel Garcia – IT Portfolio</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Space Grotesk', sans-serif; background: #0a0a0f; color: #e2e8f0; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0a0a0f; }
+  ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 2px; }
+
+  .mono { font-family: 'Fira Code', monospace; }
+  .gradient-text { background: linear-gradient(135deg, #6366f1 0%, #a78bfa 50%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-border { position: relative; }
+  .gradient-border::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #6366f1, #38bdf8); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+
+  .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(99,102,241,0.2); }
+
+  .glow { box-shadow: 0 0 30px rgba(99,102,241,0.15); }
+  .glow:hover { box-shadow: 0 0 50px rgba(99,102,241,0.3); }
+
+  .nav-link { position: relative; transition: color 0.2s; }
+  .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #6366f1; transition: width 0.3s; }
+  .nav-link:hover::after { width: 100%; }
+
+  .skill-pill { transition: all 0.2s; cursor: default; }
+  .skill-pill:hover { background: rgba(99,102,241,0.3) !important; transform: scale(1.05); }
+
+  .section-fade { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .section-fade.visible { opacity: 1; transform: translateY(0); }
+
+  .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+
+  .timeline-line { position: absolute; left: 7px; top: 24px; bottom: 0; width: 1px; background: linear-gradient(to bottom, #6366f1, transparent); }
+
+  @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .float-anim { animation: float 4s ease-in-out infinite; }
+  .blink { animation: blink 1s step-end infinite; }
+  .pulse-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid #6366f1; animation: pulse-ring 2s infinite; }
+
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); margin: 2px; }
+  .tag-blue { background: rgba(56,189,248,0.1); color: #7dd3fc; border-color: rgba(56,189,248,0.3); }
+  .tag-purple { background: rgba(167,139,250,0.1); color: #c4b5fd; border-color: rgba(167,139,250,0.3); }
+  .tag-green { background: rgba(52,211,153,0.1); color: #6ee7b7; border-color: rgba(52,211,153,0.3); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+function useInView(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if(e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
+    if(ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+function FadeSection({ children, delay = 0 }) {
+  const [ref, visible] = useInView();
+  return (
+    <div ref={ref} className={`section-fade${visible ? ' visible' : ''}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  const links = ['About','Skills','Projects','Experience','Education','Contact'];
+  return (
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-black/60 border-b border-white/5' : ''}`}>
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <span className="mono text-indigo-400 font-medium text-sm">
+          <span className="text-white/40">{'<'}</span>kylee<span className="text-white/40">{'/>'}</span>
+        </span>
+        <div className="hidden md:flex gap-8">
+          {links.map(l => (
+            <a key={l} href={`#${l.toLowerCase()}`} className="nav-link text-sm text-slate-400 hover:text-white">{l}</a>
+          ))}
+        </div>
+        <a href="mailto:kyleeremielzz@gmail.com" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors">
+          Hire Me
+        </a>
+        <button className="md:hidden text-slate-400" onClick={() => setOpen(!open)}>
+          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            {open ? <path d="M6 18L18 6M6 6l12 12"/> : <path d="M4 6h16M4 12h16M4 18h16"/>}
+          </svg>
+        </button>
+      </div>
+      {open && (
+        <div className="md:hidden bg-black/90 backdrop-blur-xl border-t border-white/5 px-6 py-4 flex flex-col gap-4">
+          {links.map(l => (
+            <a key={l} href={`#${l.toLowerCase()}`} className="text-slate-300 text-sm" onClick={() => setOpen(false)}>{l}</a>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+function Hero() {
+  const [typed, setTyped] = useState('');
+  const titles = ['IT Support Specialist','WordPress Developer','Salesforce CRM User','QA Tester'];
+  const [ti, setTi] = useState(0);
+  useEffect(() => {
+    let i = 0; let deleting = false;
+    const tick = () => {
+      const curr = titles[ti % titles.length];
+      if (!deleting) {
+        setTyped(curr.slice(0, i + 1)); i++;
+        if (i === curr.length) { deleting = true; setTimeout(tick, 1400); return; }
+      } else {
+        setTyped(curr.slice(0, i - 1)); i--;
+        if (i === 0) { deleting = false; setTi(t => t + 1); }
+      }
+      setTimeout(tick, deleting ? 50 : 90);
+    };
+    const t = setTimeout(tick, 200);
+    return () => clearTimeout(t);
+  }, [ti]);
+  return (
+    <section id="about" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <div className="hero-glow" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.08)_0%,transparent_60%)]" />
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+        <div className="float-anim inline-block mb-6">
+          <div className="relative w-28 h-28 mx-auto">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-4xl font-bold text-white">KG</div>
+            <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black pulse-dot relative" />
+          </div>
+        </div>
+        <p className="mono text-indigo-400 text-sm mb-3 tracking-widest">HELLO, WORLD! I'M</p>
+        <h1 className="text-5xl md:text-7xl font-bold mb-4">
+          <span className="gradient-text">Kylee Remiel</span><br/>
+          <span className="text-white">Garcia</span>
+        </h1>
+        <div className="h-10 flex items-center justify-center mb-6">
+          <span className="mono text-xl text-slate-300">{typed}<span className="blink text-indigo-400">|</span></span>
+        </div>
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+          Magna Cum Laude IT graduate with hands-on experience in WordPress, SEO, Salesforce CRM, and mobile app development. Passionate about building reliable tech solutions.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center mb-10">
+          <a href="#projects" className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all hover:scale-105">
+            View Projects →
+          </a>
+          <a href="mailto:kyleeremielzz@gmail.com" className="px-6 py-3 rounded-xl gradient-border bg-white/5 hover:bg-white/10 text-white font-medium transition-all hover:scale-105">
+            Contact Me
+          </a>
+        </div>
+        <div className="flex gap-8 justify-center text-center">
+          {[['BSIT','Magna Cum Laude'],['2+','Certifications'],['2','Real Projects']].map(([n,l]) => (
+            <div key={l}>
+              <div className="text-2xl font-bold gradient-text">{n}</div>
+              <div className="text-xs text-slate-500 mt-1">{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <svg className="text-slate-600" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
+      </div>
+    </section>
+  );
+}
+
+function Skills() {
+  const groups = [
+    { label: 'CRM & Platforms', color: 'tag-purple', items: ['Salesforce CRM','CRM Workflows','Data Reporting','Platform Navigation'] },
+    { label: 'Web & CMS', color: 'tag-blue', items: ['WordPress','HTML','CSS','JavaScript','PHP'] },
+    { label: 'Mobile & Frameworks', color: 'tag-green', items: ['React Native','NativeWind','QA Testing','Bug Reporting'] },
+    { label: 'Programming', color: '', items: ['Java','C++','Python (basic)'] },
+    { label: 'SEO & Analytics', color: 'tag-blue', items: ['Keyword Research','SEO Metrics','Content Strategy','Performance Tracking'] },
+    { label: 'AI Tools', color: 'tag-purple', items: ['Claude AI','Google Gemini','Content Drafting','Research Support'] },
+    { label: 'Professional', color: 'tag-green', items: ['Technical Documentation','Leadership','Critical Thinking','Communication'] },
+  ];
+  return (
+    <section id="skills" className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <FadeSection>
+          <p className="mono text-indigo-400 text-sm mb-2 text-center">{'// skills & tools'}</p>
+          <h2 className="text-4xl font-bold text-center mb-16">Tech Stack</h2>
+        </FadeSection>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {groups.map((g, i) => (
+            <FadeSection key={g.label} delay={i * 80}>
+              <div className="gradient-border rounded-2xl bg-white/3 p-5 glow card-hover h-full">
+                <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block" />{g.label}
+                </h3>
+                <div className="flex flex-wrap gap-1">
+                  {g.items.map(s => <span key={s} className={`skill-pill tag ${g.color}`}>{s}</span>)}
+                </div>
+              </div>
+            </FadeSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Projects() {
+  const projects = [
+    {
+      title: 'Talabaybayin Mobile App',
+      subtitle: 'Capstone Project',
+      desc: 'Cross-platform mobile application built with React Native and NativeWind. Led all technical documentation, QA testing, and coordinated project milestones from planning to delivery.',
+      tags: ['React Native','NativeWind','QA Testing','Technical Docs'],
+      color: 'from-indigo-600 to-purple-600',
+      icon: '📱',
+      highlights: ['Led full project documentation','QA across all app features','Cross-platform styling with NativeWind'],
+    },
+    {
+      title: 'Personal Portfolio Website',
+      subtitle: 'Full-Stack Web Project',
+      desc: 'Designed and built a full-stack portfolio site using HTML, CSS, JavaScript, and PHP. Tracked site performance through SEO metrics and applied data-driven improvements to content and structure.',
+      tags: ['HTML','CSS','JavaScript','PHP','SEO'],
+      color: 'from-sky-600 to-indigo-600',
+      icon: '🌐',
+      highlights: ['Full-stack with PHP backend','SEO-driven content strategy','Performance tracking & iteration'],
+    },
+    {
+      title: 'SNL WordPress Management',
+      subtitle: 'Internship Project',
+      desc: 'Managed and maintained client websites via WordPress during internship at SNL Virtual Partner. Conducted keyword research, published SEO content, and used AI tools to streamline workflows.',
+      tags: ['WordPress','SEO','Claude AI','Google Gemini','Content Strategy'],
+      color: 'from-emerald-600 to-teal-600',
+      icon: '✍️',
+      highlights: ['Client WordPress site management','AI-assisted content workflows','Data-informed SEO optimization'],
+    },
+  ];
+  return (
+    <section id="projects" className="py-24 px-6 bg-white/[0.02]">
+      <div className="max-w-5xl mx-auto">
+        <FadeSection>
+          <p className="mono text-indigo-400 text-sm mb-2 text-center">{'// featured work'}</p>
+          <h2 className="text-4xl font-bold text-center mb-16">Projects</h2>
+        </FadeSection>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p, i) => (
+            <FadeSection key={p.title} delay={i * 120}>
+              <div className="gradient-border rounded-2xl bg-white/3 overflow-hidden glow card-hover h-full flex flex-col">
+                <div className={`h-28 bg-gradient-to-br ${p.color} flex items-center justify-center text-5xl`}>
+                  {p.icon}
+                </div>
+                <div className="p-5 flex flex-col flex-1">
+                  <span className="text-xs text-indigo-400 mono mb-1">{p.subtitle}</span>
+                  <h3 className="text-lg font-semibold text-white mb-2">{p.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">{p.desc}</p>
+                  <ul className="mb-4 space-y-1">
+                    {p.highlights.map(h => (
+                      <li key={h} className="text-xs text-slate-500 flex items-start gap-2">
+                        <span className="text-indigo-400 mt-0.5">▸</span>{h}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex flex-wrap gap-1">
+                    {p.tags.map(t => <span key={t} className="tag text-[10px]">{t}</span>)}
+                  </div>
+                </div>
+              </div>
+            </FadeSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Experience() {
+  const items = [
+    {
+      role: 'Secretary',
+      org: 'Sangguniang Kabataan (SK)',
+      loc: 'Frances, Calumpit, Bulacan',
+      period: '2025 – Present',
+      bullets: [
+        'Maintained and organized official records, resolutions, and meeting minutes',
+        'Coordinated communications and administrative workflows across stakeholders',
+        'Prepared official reports and correspondence with analytical writing',
+      ],
+      color: 'bg-indigo-500',
+    },
+    {
+      role: 'SEO & WordPress Intern',
+      org: 'SNL Virtual Partner',
+      loc: 'Remote',
+      period: 'Jan – Mar 2025',
+      bullets: [
+        'Managed client websites on WordPress with data-informed content improvements',
+        'Conducted keyword research and applied on-page SEO optimization strategies',
+        'Used Claude AI and Google Gemini to enhance content quality and streamline workflows',
+      ],
+      color: 'bg-purple-500',
+    },
+  ];
+  return (
+    <section id="experience" className="py-24 px-6">
+      <div className="max-w-3xl mx-auto">
+        <FadeSection>
+          <p className="mono text-indigo-400 text-sm mb-2 text-center">{'// work history'}</p>
+          <h2 className="text-4xl font-bold text-center mb-16">Experience</h2>
+        </FadeSection>
+        <div className="space-y-8">
+          {items.map((item, i) => (
+            <FadeSection key={item.role} delay={i * 150}>
+              <div className="relative pl-10">
+                <div className="absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-indigo-500 bg-[#0a0a0f] z-10" />
+                {i < items.length - 1 && <div className="timeline-line" />}
+                <div className="gradient-border rounded-2xl bg-white/3 p-6 glow">
+                  <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{item.role}</h3>
+                      <p className="text-indigo-400 text-sm">{item.org} · <span className="text-slate-500">{item.loc}</span></p>
+                    </div>
+                    <span className="mono text-xs text-slate-500 bg-white/5 px-3 py-1 rounded-full border border-white/10">{item.period}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {item.bullets.map(b => (
+                      <li key={b} className="text-slate-400 text-sm flex items-start gap-2">
+                        <span className="text-indigo-400 mt-0.5 shrink-0">▸</span>{b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </FadeSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Education() {
+  const certs = [
+    { name: 'Salesforce Supported Virtual Internship', year: '2025', icon: '☁️' },
+    { name: 'Cisco Networking Basics', year: '2024', icon: '🌐' },
+    { name: 'Cisco Computer Hardware Basics', year: '2024', icon: '💻' },
+  ];
+  return (
+    <section id="education" className="py-24 px-6 bg-white/[0.02]">
+      <div className="max-w-4xl mx-auto">
+        <FadeSection>
+          <p className="mono text-indigo-400 text-sm mb-2 text-center">{'// academic background'}</p>
+          <h2 className="text-4xl font-bold text-center mb-16">Education & Certifications</h2>
+        </FadeSection>
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <FadeSection>
+            <div className="gradient-border rounded-2xl bg-white/3 p-6 glow h-full">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-indigo-600/30 flex items-center justify-center text-2xl">🎓</div>
+                <div>
+                  <h3 className="font-semibold text-white">BS Information Technology</h3>
+                  <p className="text-indigo-400 text-sm">Bulacan State University</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">🏅 MAGNA CUM LAUDE</span>
+                <span className="text-xs text-slate-500">2022 – Present</span>
+              </div>
+              <p className="text-xs text-slate-400 mb-3">Dean's Lister – multiple semesters</p>
+              <div className="flex flex-wrap gap-1">
+                {['Database Mgmt','System Analysis','Web Development','Software Engineering','Networking'].map(c => (
+                  <span key={c} className="tag text-[10px]">{c}</span>
+                ))}
+              </div>
+            </div>
+          </FadeSection>
+          <FadeSection delay={100}>
+            <div className="flex flex-col gap-4">
+              {certs.map((c, i) => (
+                <div key={c.name} className="gradient-border rounded-xl bg-white/3 p-4 glow flex items-center gap-4 card-hover">
+                  <div className="w-10 h-10 rounded-lg bg-indigo-600/20 flex items-center justify-center text-xl shrink-0">{c.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white leading-tight">{c.name}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{c.year}</p>
+                  </div>
+                  <span className="text-xs text-green-400 shrink-0">✓ Verified</span>
+                </div>
+              ))}
+            </div>
+          </FadeSection>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  return (
+    <section id="contact" className="py-24 px-6">
+      <div className="max-w-2xl mx-auto text-center">
+        <FadeSection>
+          <p className="mono text-indigo-400 text-sm mb-2">{'// get in touch'}</p>
+          <h2 className="text-4xl font-bold mb-4">Let's Work Together</h2>
+          <p className="text-slate-400 mb-10">I'm currently open to IT Support, Web Development, and Salesforce-related roles. Feel free to reach out!</p>
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {[
+              { icon: '✉️', label: 'Email', value: 'kyleeremielzz@gmail.com', href: 'mailto:kyleeremielzz@gmail.com' },
+              { icon: '📞', label: 'Phone', value: '0953-4731-458', href: 'tel:+639534731458' },
+              { icon: '📍', label: 'Location', value: 'Calumpit, Bulacan, PH', href: null },
+              { icon: '🎓', label: 'Status', value: 'Open to Opportunities', href: null },
+            ].map(item => (
+              <div key={item.label} className="gradient-border rounded-xl bg-white/3 p-4 text-left glow card-hover">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{item.icon}</span>
+                  <div>
+                    <p className="text-xs text-slate-500">{item.label}</p>
+                    {item.href
+                      ? <a href={item.href} className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">{item.value}</a>
+                      : <p className="text-sm text-slate-300">{item.value}</p>
+                    }
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <a href="mailto:kyleeremielzz@gmail.com" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-lg transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(99,102,241,0.4)]">
+            Send Me an Email ✉️
+          </a>
+        </FadeSection>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-white/5 py-8 text-center">
+      <p className="mono text-xs text-slate-600">
+        <span className="text-slate-500">© 2025</span> Kylee Remiel Garcia · Built with React + Tailwind CSS
+      </p>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Nav/>
+      <Hero/>
+      <Skills/>
+      <Projects/>
+      <Experience/>
+      <Education/>
+      <Contact/>
+      <Footer/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
