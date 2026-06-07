@@ -1,635 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Kylee Remiel Garcia — QA Tester & IT Professional | Bulacan State University Magna Cum Laude | Philippines"/>
 <title>Kylee Remiel Garcia – IT Portfolio</title>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Space Grotesk', sans-serif; background: #0a0a0f; color: #e2e8f0; overflow-x: hidden; }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #0a0a0f; }
-  ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 2px; }
-  .mono { font-family: 'Fira Code', monospace; }
-  .gradient-text { background: linear-gradient(135deg, #6366f1 0%, #a78bfa 50%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .gradient-border { position: relative; }
-  .gradient-border::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, #6366f1, #38bdf8); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-  .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(99,102,241,0.2); }
-  .glow { box-shadow: 0 0 30px rgba(99,102,241,0.15); }
-  .glow:hover { box-shadow: 0 0 50px rgba(99,102,241,0.3); }
-  .nav-link { position: relative; transition: color 0.2s; }
-  .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #6366f1; transition: width 0.3s; }
-  .nav-link:hover::after { width: 100%; }
-  .skill-pill { transition: all 0.2s; cursor: default; }
-  .skill-pill:hover { background: rgba(99,102,241,0.3) !important; transform: scale(1.05); }
-  .section-fade { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .section-fade.visible { opacity: 1; transform: translateY(0); }
-  .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
-  .timeline-line { position: absolute; left: 7px; top: 24px; bottom: 0; width: 1px; background: linear-gradient(to bottom, #6366f1, transparent); }
-  @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-  @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-  .float-anim { animation: float 4s ease-in-out infinite; }
-  .blink { animation: blink 1s step-end infinite; }
-  .pulse-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid #6366f1; animation: pulse-ring 2s infinite; }
-  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); margin: 2px; }
-  .tag-blue { background: rgba(56,189,248,0.1); color: #7dd3fc; border-color: rgba(56,189,248,0.3); }
-  .tag-purple { background: rgba(167,139,250,0.1); color: #c4b5fd; border-color: rgba(167,139,250,0.3); }
-  .tag-green { background: rgba(52,211,153,0.1); color: #6ee7b7; border-color: rgba(52,211,153,0.3); }
-  .tag-amber { background: rgba(251,191,36,0.1); color: #fcd34d; border-color: rgba(251,191,36,0.3); }
-  .hire-btn { background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4); background-size: 200% auto; transition: all 0.3s ease; }
-  .hire-btn:hover { background-position: right center; box-shadow: 0 0 20px rgba(99,102,241,0.5); transform: scale(1.05); }
-  .contact-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease; }
-  .contact-card:hover { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
-  .section-label { font-size: 15px; letter-spacing: 0.12em; }
-  /* Photo avatar ring */
-  .avatar-ring { background: linear-gradient(135deg, #6366f1, #a78bfa, #38bdf8); padding: 3px; border-radius: 9999px; display: inline-block; }
-  .avatar-inner { background: #0a0a0f; border-radius: 9999px; overflow: hidden; width: 112px; height: 112px; display: flex; align-items: center; justify-content: center; }
-  .avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
-  /* Loading skeleton for Babel */
-  #loading { position: fixed; inset: 0; background: #0a0a0f; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.4s ease; }
-  #loading.hidden { opacity: 0; pointer-events: none; }
-  .loader-dot { width: 8px; height: 8px; border-radius: 50%; background: #6366f1; animation: blink 1s step-end infinite; }
-  .loader-dot:nth-child(2) { animation-delay: 0.2s; }
-  .loader-dot:nth-child(3) { animation-delay: 0.4s; }
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Space Grotesk",sans-serif;background:#0a0a0f;color:#e2e8f0;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0a0a0f}
+::-webkit-scrollbar-thumb{background:#6366f1;border-radius:2px}
+.mono{font-family:"Fira Code",monospace}
+.gradient-text{background:linear-gradient(135deg,#6366f1 0%,#a78bfa 50%,#38bdf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gradient-border{position:relative}
+.gradient-border::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#6366f1,#38bdf8);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.card-hover{transition:transform .3s ease,box-shadow .3s ease}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(99,102,241,.2)}
+.glow{box-shadow:0 0 30px rgba(99,102,241,.15)}
+.glow:hover{box-shadow:0 0 50px rgba(99,102,241,.3)}
+.nav-link{position:relative;transition:color .2s}
+.nav-link::after{content:"";position:absolute;bottom:-2px;left:0;width:0;height:1px;background:#6366f1;transition:width .3s}
+.nav-link:hover::after{width:100%}
+.skill-pill{transition:all .2s;cursor:default}
+.skill-pill:hover{background:rgba(99,102,241,.3)!important;transform:scale(1.05)}
+.section-fade{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.section-fade.visible{opacity:1;transform:translateY(0)}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.timeline-line{position:absolute;left:7px;top:24px;bottom:0;width:1px;background:linear-gradient(to bottom,#6366f1,transparent)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.float-anim{animation:float 4s ease-in-out infinite}
+.blink{animation:blink 1s step-end infinite}
+.pulse-dot{position:absolute;bottom:4px;right:4px;width:14px;height:14px;background:#4ade80;border-radius:50%;border:2px solid #0a0a0f}
+.pulse-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid #6366f1;animation:pulse-ring 2s infinite}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);margin:2px}
+.tag-blue{background:rgba(56,189,248,.1);color:#7dd3fc;border-color:rgba(56,189,248,.3)}
+.tag-purple{background:rgba(167,139,250,.1);color:#c4b5fd;border-color:rgba(167,139,250,.3)}
+.tag-green{background:rgba(52,211,153,.1);color:#6ee7b7;border-color:rgba(52,211,153,.3)}
+.tag-amber{background:rgba(251,191,36,.1);color:#fcd34d;border-color:rgba(251,191,36,.3)}
+.hire-btn{background:linear-gradient(135deg,#6366f1,#8b5cf6,#06b6d4);background-size:200% auto;transition:all .3s ease}
+.hire-btn:hover{background-position:right center;box-shadow:0 0 20px rgba(99,102,241,.5);transform:scale(1.05)}
+.contact-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);transition:all .3s ease}
+.contact-card:hover{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.4);transform:translateY(-3px)}
+.avatar-ring{background:linear-gradient(135deg,#6366f1,#a78bfa,#38bdf8);padding:3px;border-radius:9999px;display:inline-block}
+.avatar-inner{background:#0a0a0f;border-radius:9999px;overflow:hidden;width:112px;height:112px}
+.avatar-inner img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.section-label{font-size:15px;letter-spacing:.12em}
 </style>
 </head>
 <body>
 
-<!-- Loading screen while Babel compiles -->
-<div id="loading">
-  <div style="text-align:center">
-    <p class="mono" style="color:#6366f1;font-size:13px;margin-bottom:14px;letter-spacing:0.1em">initializing portfolio...</p>
-    <div style="display:flex;gap:8px;justify-content:center">
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
-      <div class="loader-dot"></div>
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <span class="mono text-indigo-400 font-medium text-base">
+      <span class="text-white/40">&lt;</span>kylee<span class="text-white/40">/&gt;</span>
+    </span>
+    <div class="hidden md:flex gap-8">
+      <a href="#about"      class="nav-link text-base text-slate-300 hover:text-white font-medium">About</a>
+      <a href="#skills"     class="nav-link text-base text-slate-300 hover:text-white font-medium">Skills</a>
+      <a href="#projects"   class="nav-link text-base text-slate-300 hover:text-white font-medium">Projects</a>
+      <a href="#experience" class="nav-link text-base text-slate-300 hover:text-white font-medium">Experience</a>
+      <a href="#education"  class="nav-link text-base text-slate-300 hover:text-white font-medium">Education</a>
+      <a href="#contact"    class="nav-link text-base text-slate-300 hover:text-white font-medium">Contact</a>
+    </div>
+    <a href="mailto:kyleeremielzz@gmail.com" class="hire-btn hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold">Hire Me ✨</a>
+    <button id="menu-btn" class="md:hidden text-slate-400">
+      <svg id="icon-open"  width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg id="icon-close" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="hidden"><path d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden bg-black/90 backdrop-blur-xl border-t border-white/5 px-6 py-4 flex flex-col gap-4">
+    <a href="#about"      class="text-slate-300 text-base font-medium mobile-link">About</a>
+    <a href="#skills"     class="text-slate-300 text-base font-medium mobile-link">Skills</a>
+    <a href="#projects"   class="text-slate-300 text-base font-medium mobile-link">Projects</a>
+    <a href="#experience" class="text-slate-300 text-base font-medium mobile-link">Experience</a>
+    <a href="#education"  class="text-slate-300 text-base font-medium mobile-link">Education</a>
+    <a href="#contact"    class="text-slate-300 text-base font-medium mobile-link">Contact</a>
+    <a href="mailto:kyleeremielzz@gmail.com" class="hire-btn text-center px-4 py-2.5 rounded-lg text-white text-sm font-semibold">Hire Me ✨</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="about" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+  <div class="hero-glow"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at top,rgba(99,102,241,.08) 0%,transparent 60%)"></div>
+  <div class="relative z-10 text-center max-w-5xl mx-auto px-6">
+    <div class="float-anim inline-block mb-6">
+      <div class="relative inline-block">
+        <div class="avatar-ring">
+          <div class="avatar-inner">
+            <img src="data:image/jpeg;base64,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" alt="Kylee Remiel Garcia"/>
+          </div>
+        </div>
+        <div class="pulse-dot"></div>
+      </div>
+    </div>
+    <p class="mono text-indigo-400 text-sm mb-3 tracking-widest">HELLO, WORLD! I'M</p>
+    <h1 class="font-bold mb-4 whitespace-nowrap gradient-text" style="font-size:clamp(2.2rem,6vw,5rem);line-height:1.1">Kylee Remiel Garcia</h1>
+    <div class="h-10 flex items-center justify-center mb-6">
+      <span class="mono text-xl text-slate-300"><span id="typed-text"></span><span class="blink text-indigo-400">|</span></span>
+    </div>
+    <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+      Magna Cum Laude IT graduate from Bulacan State University. Experienced in QA testing, WordPress, Salesforce CRM, and mobile app development — passionate about building reliable tech solutions.
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center mb-10">
+      <a href="#projects" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all hover:scale-105">View Projects →</a>
+      <a href="mailto:kyleeremielzz@gmail.com" class="px-6 py-3 rounded-xl gradient-border bg-white/5 hover:bg-white/10 text-white font-medium transition-all hover:scale-105">Contact Me</a>
+      <a href="https://github.com/kayliremyel" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-medium transition-all hover:scale-105 flex items-center gap-2">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/kyleeremielgarcia" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-medium transition-all hover:scale-105 flex items-center gap-2">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+    <div class="flex gap-8 justify-center text-center">
+      <div><div class="text-2xl font-bold gradient-text">BSIT</div><div class="text-xs text-slate-500 mt-1">Magna Cum Laude</div></div>
+      <div><div class="text-2xl font-bold gradient-text">3+</div><div class="text-xs text-slate-500 mt-1">Certifications</div></div>
+      <div><div class="text-2xl font-bold gradient-text">2</div><div class="text-xs text-slate-500 mt-1">Real Projects</div></div>
     </div>
   </div>
-</div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <svg class="text-slate-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
+  </div>
+</section>
 
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
-
-// Hide loading screen once React mounts
-function HideLoader() {
-  useEffect(() => {
-    const el = document.getElementById('loading');
-    if (el) { el.classList.add('hidden'); setTimeout(() => el.remove(), 500); }
-  }, []);
-  return null;
-}
-
-function useInView(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if(e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
-    if(ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, visible];
-}
-
-function FadeSection({ children, delay = 0 }) {
-  const [ref, visible] = useInView();
-  return (
-    <div ref={ref} className={`section-fade${visible ? ' visible' : ''}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
+<!-- SKILLS -->
+<section id="skills" class="py-24 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="section-fade text-center mb-16">
+      <p class="mono text-indigo-400 mb-2 section-label">// skills &amp; tools</p>
+      <h2 class="text-4xl font-bold">Tech Stack</h2>
     </div>
-  );
-}
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="skills-grid">
+    </div>
+  </div>
+</section>
 
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', h);
-    return () => window.removeEventListener('scroll', h);
-  }, []);
-  const links = ['About','Skills','Projects','Experience','Education','Contact'];
-  return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-xl bg-black/60 border-b border-white/5' : ''}`}>
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="mono text-indigo-400 font-medium text-base">
-          <span className="text-white/40">{'<'}</span>kylee<span className="text-white/40">{'/>'}</span>
-        </span>
-        <div className="hidden md:flex gap-8">
-          {links.map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`} className="nav-link text-base text-slate-300 hover:text-white font-medium">{l}</a>
-          ))}
+<!-- PROJECTS -->
+<section id="projects" class="py-24 px-6 bg-white/[0.02]">
+  <div class="max-w-5xl mx-auto">
+    <div class="section-fade text-center mb-16">
+      <p class="mono text-indigo-400 mb-2 section-label">// featured work</p>
+      <h2 class="text-4xl font-bold">Projects</h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="py-24 px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="section-fade text-center mb-16">
+      <p class="mono text-indigo-400 mb-2 section-label">// work history</p>
+      <h2 class="text-4xl font-bold">Experience</h2>
+    </div>
+    <div class="space-y-8" id="experience-list"></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="py-24 px-6 bg-white/[0.02]">
+  <div class="max-w-4xl mx-auto">
+    <div class="section-fade text-center mb-16">
+      <p class="mono text-indigo-400 mb-2 section-label">// academic background</p>
+      <h2 class="text-4xl font-bold">Education &amp; Certifications</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="section-fade gradient-border rounded-2xl p-6 glow" style="background:rgba(255,255,255,0.03)">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:rgba(99,102,241,0.3)">🎓</div>
+          <div>
+            <h3 class="font-semibold text-white">BS Information Technology</h3>
+            <p class="text-indigo-400 text-sm">Bulacan State University</p>
+          </div>
         </div>
-        <a href="mailto:kyleeremielzz@gmail.com" className="hire-btn hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold cursor-pointer">
-          Hire Me ✨
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="px-3 py-1 rounded-full text-xs font-bold border" style="background:rgba(245,158,11,0.2);color:#fcd34d;border-color:rgba(245,158,11,0.3)">🏅 MAGNA CUM LAUDE</span>
+          <span class="px-3 py-1 rounded-full text-xs font-semibold border" style="background:rgba(99,102,241,0.2);color:#a5b4fc;border-color:rgba(99,102,241,0.3)">🏆 Dean's Lister</span>
+        </div>
+        <p class="text-xs text-slate-500 mb-4 mono">2022 – 2026</p>
+        <div class="flex flex-wrap gap-1">
+          <span class="tag text-xs">Database Mgmt</span>
+          <span class="tag text-xs">System Analysis</span>
+          <span class="tag text-xs">Web Development</span>
+          <span class="tag text-xs">Software Engineering</span>
+          <span class="tag text-xs">Networking</span>
+        </div>
+      </div>
+      <div class="section-fade flex flex-col gap-4" id="certs-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="section-fade text-center mb-14">
+      <p class="mono text-indigo-400 mb-2 section-label">// get in touch</p>
+      <h2 class="text-4xl font-bold mb-3">Let's Work Together</h2>
+      <p class="text-slate-400 text-base">I'm currently open to QA Tester, IT Support, and WordPress/Salesforce-related roles.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-5 mb-10" id="contact-grid"></div>
+    <div class="section-fade text-center">
+      <div class="inline-flex flex-col sm:flex-row gap-4 items-center mb-8">
+        <a href="mailto:kyleeremielzz@gmail.com" class="hire-btn inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-base">✉️ Send Me an Email</a>
+        <a href="tel:+639534731458" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl border text-indigo-300 hover:text-white font-semibold text-base transition-all hover:bg-indigo-600/10" style="border-color:rgba(99,102,241,0.4)">📞 Call Me</a>
+      </div>
+      <div class="flex gap-4 justify-center mb-8">
+        <a href="https://github.com/kayliremyel" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-slate-400 hover:text-white transition-all text-sm font-medium border" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.05)">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
         </a>
-        <button className="md:hidden text-slate-400" onClick={() => setOpen(!open)}>
-          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            {open ? <path d="M6 18L18 6M6 6l12 12"/> : <path d="M4 6h16M4 12h16M4 18h16"/>}
-          </svg>
-        </button>
+        <a href="https://linkedin.com/in/kyleeremielgarcia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-slate-400 hover:text-white transition-all text-sm font-medium border" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.05)">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
       </div>
-      {open && (
-        <div className="md:hidden bg-black/90 backdrop-blur-xl border-t border-white/5 px-6 py-4 flex flex-col gap-4">
-          {links.map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`} className="text-slate-300 text-base font-medium" onClick={() => setOpen(false)}>{l}</a>
-          ))}
-          <a href="mailto:kyleeremielzz@gmail.com" className="hire-btn text-center px-4 py-2.5 rounded-lg text-white text-sm font-semibold">Hire Me ✨</a>
-        </div>
-      )}
-    </nav>
-  );
+      <p class="text-slate-600 text-xs mono">© 2026 Kylee Remiel Garcia · Built with HTML + Tailwind CSS</p>
+    </div>
+  </div>
+</section>
+
+<script>
+
+const SKILLS = [
+  { label:"Testing & QA",      icon:"🧪", color:"tag-amber",  items:["Manual Testing","Test Case Writing","Bug Reporting","Regression Testing","QA Documentation"] },
+  { label:"Web & CMS",         icon:"🌐", color:"tag-blue",   items:["WordPress","HTML","CSS","JavaScript","PHP"] },
+  { label:"Mobile & Frameworks",icon:"📱",color:"tag-green",  items:["React Native","NativeWind","Cross-platform Dev"] },
+  { label:"CRM & Platforms",   icon:"☁️", color:"tag-purple", items:["Salesforce CRM","CRM Workflows","Data Reporting","Platform Navigation"] },
+  { label:"AI Tools",          icon:"🤖", color:"tag-purple", items:["Claude AI","Google Gemini","Content Drafting","Research Support"] },
+  { label:"Programming",       icon:"💻", color:"",           items:["Java","C++","Python (basic)"] },
+  { label:"Professional",      icon:"🤝", color:"tag-green",  items:["Technical Documentation","Leadership","Critical Thinking","Communication"] },
+];
+
+const PROJECTS = [
+  {
+    title:"Talabaybayin Mobile App", subtitle:"Capstone Project", role:"QA Tester & Tech Lead",
+    desc:"Cross-platform mobile application built with React Native and NativeWind. Led all technical documentation, QA testing, and coordinated project milestones from planning to delivery.",
+    tags:["React Native","NativeWind","QA Testing","Technical Docs"],
+    color:"from-indigo-600 to-purple-600", gradient:"linear-gradient(135deg,#4f46e5,#7c3aed)",
+    icon:"📱", link:null,
+    highlights:["Led full project documentation end-to-end","Wrote and executed test cases across all app features","Cross-platform UI consistency with NativeWind"],
+  },
+  {
+    title:"Personal Portfolio Website", subtitle:"Front-End Web Project", role:"Designer & Developer",
+    desc:"Designed and built a personal portfolio using HTML, Tailwind CSS, and JavaScript. Deployed via GitHub Pages as a fully responsive single-page site.",
+    tags:["HTML","Tailwind CSS","JavaScript","GitHub Pages"],
+    color:"from-sky-600 to-indigo-600", gradient:"linear-gradient(135deg,#0284c7,#4f46e5)",
+    icon:"🌐", link:"https://kayliremyel.github.io/Kylee-Remiel-Garcia",
+    highlights:["Responsive single-page application","Custom animations and scroll-triggered reveals","Deployed and maintained on GitHub Pages"],
+  },
+  {
+    title:"SNL WordPress Management", subtitle:"Internship Project", role:"WordPress & Content Intern",
+    desc:"Managed client websites at SNL Virtual Partner, making data-informed improvements to content quality. Used Claude AI and Google Gemini to streamline workflows and support research tasks.",
+    tags:["WordPress","Claude AI","Google Gemini","Content Strategy"],
+    color:"from-emerald-600 to-teal-600", gradient:"linear-gradient(135deg,#059669,#0d9488)",
+    icon:"✍️", link:null,
+    highlights:["Managed multiple client WordPress sites","AI-assisted content creation with Claude & Gemini","Maintained site performance and content quality"],
+  },
+];
+
+const EXPERIENCE = [
+  {
+    role:"Secretary", org:"Sangguniang Kabataan (SK)", loc:"Frances, Calumpit, Bulacan", period:"2025 – Present",
+    bullets:[
+      "Maintained and organized official records, resolutions, and meeting minutes for the barangay youth council",
+      "Coordinated communications and administrative workflows across stakeholders and community members",
+      "Prepared official reports and correspondence, strengthening organizational documentation practices",
+    ],
+  },
+  {
+    role:"SEO & WordPress Intern", org:"SNL Virtual Partner", loc:"Remote", period:"Jan 5 – Mar 20, 2025",
+    bullets:[
+      "Managed client WordPress sites, delivering consistent maintenance and data-informed content improvements",
+      "Used Claude AI and Google Gemini to enhance content quality, streamline workflows, and support research tasks",
+      "Collaborated remotely with supervisors across a 3-month engagement to meet client expectations",
+    ],
+  },
+];
+
+const CERTS = [
+  { name:"Salesforce Supported Virtual Internship", issuer:"Salesforce", year:"2025", icon:"☁️", grad:"linear-gradient(to bottom,#2563eb,#0891b2)" },
+  { name:"Cisco Networking Basics",                 issuer:"Cisco",      year:"2024", icon:"🌐", grad:"linear-gradient(to bottom,#0d9488,#059669)" },
+  { name:"Cisco Computer Hardware Basics",          issuer:"Cisco",      year:"2024", icon:"💻", grad:"linear-gradient(to bottom,#7c3aed,#4f46e5)" },
+];
+
+const CONTACTS = [
+  { icon:"✉️", label:"Email",    value:"kyleeremielzz@gmail.com", href:"mailto:kyleeremielzz@gmail.com", desc:"Best way to reach me" },
+  { icon:"📞", label:"Phone",    value:"0953-4731-458",            href:"tel:+639534731458",              desc:"Available Mon–Fri" },
+  { icon:"📍", label:"Location", value:"Calumpit, Bulacan, PH",   href:null,                             desc:"Open to remote work" },
+  { icon:"💼", label:"Status",   value:"Open to Opportunities",   href:null,                             desc:"QA Tester & IT Support roles" },
+];
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────
+function renderSkills() {
+  const grid = document.getElementById("skills-grid");
+  SKILLS.forEach((g, i) => {
+    const pills = g.items.map(s => `<span class="skill-pill tag ${g.color}">${s}</span>`).join("");
+    const div = document.createElement("div");
+    div.className = "section-fade gradient-border rounded-2xl p-5 glow card-hover h-full";
+    div.style = "background:rgba(255,255,255,0.03);transition-delay:" + (i*80) + "ms";
+    div.innerHTML = `
+      <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+        <span class="text-base">${g.icon}</span>
+        <span class="w-2 h-2 rounded-full bg-indigo-500 inline-block"></span>${g.label}
+      </h3>
+      <div class="flex flex-wrap gap-1">${pills}</div>`;
+    grid.appendChild(div);
+  });
 }
 
-/* ── HERO ── */
-function Hero() {
-  const [typed, setTyped] = useState('');
-  const titles = ['QA Tester','IT Support Specialist','WordPress Developer','Salesforce CRM User'];
-  const [ti, setTi] = useState(0);
-  useEffect(() => {
-    let i = 0; let deleting = false;
-    const tick = () => {
-      const curr = titles[ti % titles.length];
-      if (!deleting) {
-        setTyped(curr.slice(0, i + 1)); i++;
-        if (i === curr.length) { deleting = true; setTimeout(tick, 1400); return; }
-      } else {
-        setTyped(curr.slice(0, i - 1)); i--;
-        if (i === 0) { deleting = false; setTi(t => t + 1); }
-      }
-      setTimeout(tick, deleting ? 50 : 90);
-    };
-    const t = setTimeout(tick, 200);
-    return () => clearTimeout(t);
-  }, [ti]);
+function renderProjects() {
+  const grid = document.getElementById("projects-grid");
+  PROJECTS.forEach((p, i) => {
+    const pills = p.tags.map(t => `<span class="tag" style="font-size:10px">${t}</span>`).join("");
+    const hi    = p.highlights.map(h => `<li class="text-xs text-slate-500 flex items-start gap-2"><span class="text-indigo-400 mt-0.5">▸</span>${h}</li>`).join("");
+    const liveLink = p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Live Site</a>` : "";
+    const div = document.createElement("div");
+    div.className = "section-fade gradient-border rounded-2xl overflow-hidden glow card-hover h-full flex flex-col";
+    div.style = "background:rgba(255,255,255,0.03);transition-delay:" + (i*120) + "ms";
+    div.innerHTML = `
+      <div class="h-28 flex flex-col items-center justify-center gap-2" style="background:${p.gradient}">
+        <span class="text-4xl">${p.icon}</span>
+        <span class="text-xs font-medium text-white/80 px-3 py-1 rounded-full" style="background:rgba(0,0,0,0.3)">${p.role}</span>
+      </div>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-xs text-indigo-400 mono mb-1">${p.subtitle}</span>
+        <h3 class="text-lg font-semibold text-white mb-2">${p.title}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-4 flex-1">${p.desc}</p>
+        <ul class="mb-4 space-y-1">${hi}</ul>
+        <div class="flex flex-wrap gap-1 mb-2">${pills}</div>
+        ${liveLink}
+      </div>`;
+    grid.appendChild(div);
+  });
+}
 
-  return (
-    <section id="about" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="hero-glow" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.08)_0%,transparent_60%)]" />
-      <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
-
-        {/* Avatar — swap src to a real photo URL when ready */}
-        <div className="float-anim inline-block mb-6">
-          <div className="relative inline-block">
-            <div className="avatar-ring">
-              <div className="avatar-inner">
-                <img src="data:image/jpeg;base64,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" alt="Kylee Remiel Garcia" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top'}} />
-              </div>
-            </div>
-            <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black pulse-dot" style={{position:'absolute'}} />
+function renderExperience() {
+  const list = document.getElementById("experience-list");
+  EXPERIENCE.forEach((item, i) => {
+    const bullets = item.bullets.map(b => `<li class="text-slate-400 text-sm flex items-start gap-2"><span class="text-indigo-400 mt-0.5 shrink-0">▸</span>${b}</li>`).join("");
+    const isLast = i === EXPERIENCE.length - 1;
+    const div = document.createElement("div");
+    div.className = "section-fade relative pl-10";
+    div.style = "transition-delay:" + (i*150) + "ms";
+    div.innerHTML = `
+      <div class="absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-indigo-500 z-10" style="background:#0a0a0f"></div>
+      ${!isLast ? '<div class="timeline-line"></div>' : ''}
+      <div class="gradient-border rounded-2xl p-6 glow" style="background:rgba(255,255,255,0.03)">
+        <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+          <div>
+            <h3 class="text-lg font-semibold text-white">${item.role}</h3>
+            <p class="text-indigo-400 text-sm">${item.org} · <span class="text-slate-500">${item.loc}</span></p>
           </div>
+          <span class="mono text-xs text-slate-500 px-3 py-1 rounded-full border" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">${item.period}</span>
         </div>
-
-        <p className="mono text-indigo-400 text-sm mb-3 tracking-widest">HELLO, WORLD! I'M</p>
-        <h1 className="font-bold mb-4 whitespace-nowrap" style={{fontSize:'clamp(2.2rem, 6vw, 5rem)', lineHeight: 1.1}}>
-          <span className="gradient-text">Kylee Remiel Garcia</span>
-        </h1>
-        <div className="h-10 flex items-center justify-center mb-6">
-          <span className="mono text-xl text-slate-300">{typed}<span className="blink text-indigo-400">|</span></span>
-        </div>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-          Magna Cum Laude IT graduate from Bulacan State University. Experienced in QA testing, WordPress, Salesforce CRM, and mobile app development — passionate about building reliable tech solutions.
-        </p>
-
-        <div className="flex flex-wrap gap-4 justify-center mb-10">
-          <a href="#projects" className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all hover:scale-105">
-            View Projects →
-          </a>
-          <a href="mailto:kyleeremielzz@gmail.com" className="px-6 py-3 rounded-xl gradient-border bg-white/5 hover:bg-white/10 text-white font-medium transition-all hover:scale-105">
-            Contact Me
-          </a>
-          {/* Social links */}
-          <a href="https://github.com/kayliremyel" target="_blank" rel="noopener noreferrer"
-            className="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-medium transition-all hover:scale-105 flex items-center gap-2">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-            GitHub
-          </a>
-          {/* Add your LinkedIn URL below */}
-          <a href="https://linkedin.com/in/kyleeremielgarcia" target="_blank" rel="noopener noreferrer"
-            className="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-medium transition-all hover:scale-105 flex items-center gap-2">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            LinkedIn
-          </a>
-        </div>
-
-        <div className="flex gap-8 justify-center text-center">
-          {[['BSIT','Magna Cum Laude'],['3+','Certifications'],['2','Real Projects']].map(([n,l]) => (
-            <div key={l}>
-              <div className="text-2xl font-bold gradient-text">{n}</div>
-              <div className="text-xs text-slate-500 mt-1">{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <svg className="text-slate-600" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
-      </div>
-    </section>
-  );
+        <ul class="space-y-2">${bullets}</ul>
+      </div>`;
+    list.appendChild(div);
+  });
 }
 
-/* ── SKILLS — SEO & Analytics group REMOVED ── */
-function Skills() {
-  const groups = [
-    {
-      label: 'Testing & QA',
-      color: 'tag-amber',
-      icon: '🧪',
-      items: ['Manual Testing','Test Case Writing','Bug Reporting','Regression Testing','QA Documentation'],
-    },
-    {
-      label: 'Web & CMS',
-      color: 'tag-blue',
-      icon: '🌐',
-      items: ['WordPress','HTML','CSS','JavaScript','PHP'],
-    },
-    {
-      label: 'Mobile & Frameworks',
-      color: 'tag-green',
-      icon: '📱',
-      items: ['React Native','NativeWind','Cross-platform Dev'],
-    },
-    {
-      label: 'CRM & Platforms',
-      color: 'tag-purple',
-      icon: '☁️',
-      items: ['Salesforce CRM','CRM Workflows','Data Reporting','Platform Navigation'],
-    },
-    {
-      label: 'AI Tools',
-      color: 'tag-purple',
-      icon: '🤖',
-      items: ['Claude AI','Google Gemini','Content Drafting','Research Support'],
-    },
-    {
-      label: 'Programming',
-      color: '',
-      icon: '💻',
-      items: ['Java','C++','Python (basic)'],
-    },
-    {
-      label: 'Professional',
-      color: 'tag-green',
-      icon: '🤝',
-      items: ['Technical Documentation','Leadership','Critical Thinking','Communication'],
-    },
-  ];
-  return (
-    <section id="skills" className="py-24 px-6">
-      <div className="max-w-5xl mx-auto">
-        <FadeSection>
-          <p className="mono text-indigo-400 mb-2 text-center section-label">{'// skills & tools'}</p>
-          <h2 className="text-4xl font-bold text-center mb-16">Tech Stack</h2>
-        </FadeSection>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {groups.map((g, i) => (
-            <FadeSection key={g.label} delay={i * 80}>
-              <div className="gradient-border rounded-2xl bg-white/3 p-5 glow card-hover h-full">
-                <h3 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                  <span className="text-base">{g.icon}</span>
-                  <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block" />{g.label}
-                </h3>
-                <div className="flex flex-wrap gap-1">
-                  {g.items.map(s => <span key={s} className={`skill-pill tag ${g.color}`}>{s}</span>)}
-                </div>
-              </div>
-            </FadeSection>
-          ))}
+function renderCerts() {
+  const list = document.getElementById("certs-list");
+  const label = document.createElement("p");
+  label.className = "text-xs text-slate-500 uppercase tracking-widest mono mb-1";
+  label.textContent = "Certifications";
+  list.appendChild(label);
+  CERTS.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "section-fade gradient-border rounded-xl glow card-hover overflow-hidden flex";
+    div.style = "background:rgba(255,255,255,0.03)";
+    div.innerHTML = `
+      <div class="w-1.5 shrink-0" style="background:${c.grad}"></div>
+      <div class="flex items-center gap-4 p-4 flex-1">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0" style="background:rgba(99,102,241,0.2)">${c.icon}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-white leading-tight">${c.name}</p>
+          <p class="text-xs text-slate-500 mt-0.5">${c.issuer} · ${c.year}</p>
         </div>
-      </div>
-    </section>
-  );
+        <span class="text-xs text-green-400 shrink-0 flex items-center gap-1">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>Verified
+        </span>
+      </div>`;
+    list.appendChild(div);
+  });
 }
 
-/* ── PROJECTS — SEO removed from Personal Portfolio ── */
-function Projects() {
-  const projects = [
-    {
-      title: 'Talabaybayin Mobile App',
-      subtitle: 'Capstone Project',
-      desc: 'Cross-platform mobile application built with React Native and NativeWind. Led all technical documentation, QA testing, and coordinated project milestones from planning to delivery.',
-      tags: ['React Native','NativeWind','QA Testing','Technical Docs'],
-      color: 'from-indigo-600 to-purple-600',
-      icon: '📱',
-      role: 'QA Tester & Tech Lead',
-      highlights: [
-        'Led full project documentation end-to-end',
-        'Wrote and executed test cases across all app features',
-        'Cross-platform UI consistency with NativeWind',
-      ],
-      link: null,
-    },
-    {
-      title: 'Personal Portfolio Website',
-      subtitle: 'Front-End Web Project',
-      desc: 'Designed and built a personal portfolio using React 18, Babel, and Tailwind CSS. Deployed via GitHub Pages as a fully responsive single-page application.',
-      tags: ['React','Tailwind CSS','JavaScript',' GitHub Pages'],
-      color: 'from-sky-600 to-indigo-600',
-      icon: '🌐',
-      role: 'Designer & Developer',
-      highlights: [
-        'Responsive single-page React application',
-        'Custom animations and scroll-triggered reveals',
-        'Deployed and maintained on GitHub Pages',
-      ],
-      link: 'https://kayliremyel.github.io/Kylee-Remiel-Garcia',
-    },
-    {
-      title: 'SNL WordPress Management',
-      subtitle: 'Internship Project',
-      desc: 'Managed client WordPress sites at SNL Virtual Partner, conducting content updates and data-informed improvements. Used Claude AI and Google Gemini to streamline content workflows, enhance quality, and support research tasks. Delivered consistent website maintenance remotely across a 3-month engagement.',
-      tags: ['WordPress','Claude AI','Google Gemini','Content Strategy'],
-      color: 'from-emerald-600 to-teal-600',
-      icon: '✍️',
-      role: 'WordPress & Content Intern',
-      highlights: [
-        'Managed multiple client WordPress sites',
-        'AI-assisted content creation with Claude & Gemini',
-        'Maintained site performance and content quality',
-      ],
-      link: null,
-    },
-  ];
-  return (
-    <section id="projects" className="py-24 px-6 bg-white/[0.02]">
-      <div className="max-w-5xl mx-auto">
-        <FadeSection>
-          <p className="mono text-indigo-400 mb-2 text-center section-label">{'// featured work'}</p>
-          <h2 className="text-4xl font-bold text-center mb-16">Projects</h2>
-        </FadeSection>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p, i) => (
-            <FadeSection key={p.title} delay={i * 120}>
-              <div className="gradient-border rounded-2xl bg-white/3 overflow-hidden glow card-hover h-full flex flex-col">
-                {/* Project color banner with icon + role badge */}
-                <div className={`h-28 bg-gradient-to-br ${p.color} flex flex-col items-center justify-center gap-2 relative`}>
-                  <span className="text-4xl">{p.icon}</span>
-                  <span className="text-xs font-medium text-white/80 bg-black/30 px-3 py-1 rounded-full">{p.role}</span>
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <span className="text-xs text-indigo-400 mono mb-1">{p.subtitle}</span>
-                  <h3 className="text-lg font-semibold text-white mb-2">{p.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">{p.desc}</p>
-                  <ul className="mb-4 space-y-1">
-                    {p.highlights.map(h => (
-                      <li key={h} className="text-xs text-slate-500 flex items-start gap-2">
-                        <span className="text-indigo-400 mt-0.5">▸</span>{h}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {p.tags.map(t => <span key={t} className="tag text-[10px]">{t}</span>)}
-                  </div>
-                  {p.link && (
-                    <a href={p.link} target="_blank" rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
-                      <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                      View Live Site
-                    </a>
-                  )}
-                </div>
-              </div>
-            </FadeSection>
-          ))}
+function renderContact() {
+  const grid = document.getElementById("contact-grid");
+  CONTACTS.forEach((item, i) => {
+    const inner = item.href
+      ? `<a href="${item.href}" class="text-base font-semibold text-indigo-400 hover:text-indigo-300 transition-colors break-all">${item.value}</a>`
+      : `<p class="text-base font-semibold text-white">${item.value}</p>`;
+    const div = document.createElement("div");
+    div.className = "section-fade contact-card rounded-2xl p-6 h-full";
+    div.style = "transition-delay:" + (i*80) + "ms";
+    div.innerHTML = `
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0" style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.2)">${item.icon}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">${item.label}</p>
+          ${inner}
+          <p class="text-xs mt-1" style="color:#475569">${item.desc}</p>
         </div>
-      </div>
-    </section>
-  );
+      </div>`;
+    grid.appendChild(div);
+  });
 }
 
-/* ── EXPERIENCE ── */
-function Experience() {
-  const items = [
-    {
-      role: 'Secretary',
-      org: 'Sangguniang Kabataan (SK)',
-      loc: 'Frances, Calumpit, Bulacan',
-      period: '2025 – Present',
-      bullets: [
-        'Maintained and organized official records, resolutions, and meeting minutes for the barangay youth council',
-        'Coordinated communications and administrative workflows across stakeholders and community members',
-        'Prepared official reports and correspondence, strengthening organizational documentation practices',
-      ],
-    },
-    {
-      role: 'SEO & WordPress Intern',
-      org: 'SNL Virtual Partner',
-      loc: 'Remote',
-      period: 'Jan – Mar 2025',
-      bullets: [
-        'Managed and updated multiple client websites on WordPress, improving content quality and site structure',
-        'Leveraged Claude AI and Google Gemini to streamline content workflows and enhance output efficiency',
-        'Collaborated remotely with supervisors to deliver consistent website maintenance and improvements',
-      ],
-    },
-  ];
-  return (
-    <section id="experience" className="py-24 px-6">
-      <div className="max-w-3xl mx-auto">
-        <FadeSection>
-          <p className="mono text-indigo-400 mb-2 text-center section-label">{'// work history'}</p>
-          <h2 className="text-4xl font-bold text-center mb-16">Experience</h2>
-        </FadeSection>
-        <div className="space-y-8">
-          {items.map((item, i) => (
-            <FadeSection key={item.role} delay={i * 150}>
-              <div className="relative pl-10">
-                <div className="absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-indigo-500 bg-[#0a0a0f] z-10" />
-                {i < items.length - 1 && <div className="timeline-line" />}
-                <div className="gradient-border rounded-2xl bg-white/3 p-6 glow">
-                  <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">{item.role}</h3>
-                      <p className="text-indigo-400 text-sm">{item.org} · <span className="text-slate-500">{item.loc}</span></p>
-                    </div>
-                    <span className="mono text-xs text-slate-500 bg-white/5 px-3 py-1 rounded-full border border-white/10">{item.period}</span>
-                  </div>
-                  <ul className="space-y-2">
-                    {item.bullets.map(b => (
-                      <li key={b} className="text-slate-400 text-sm flex items-start gap-2">
-                        <span className="text-indigo-400 mt-0.5 shrink-0">▸</span>{b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </FadeSection>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+// ── TYPEWRITER ────────────────────────────────────────────────────────
+function typewriter() {
+  const el = document.getElementById("typed-text");
+  const titles = ["QA Tester","IT Support Specialist","WordPress Developer","Salesforce CRM User"];
+  let ti = 0, i = 0, deleting = false;
+  function tick() {
+    const curr = titles[ti % titles.length];
+    if (!deleting) {
+      el.textContent = curr.slice(0, ++i);
+      if (i === curr.length) { deleting = true; setTimeout(tick, 1400); return; }
+    } else {
+      el.textContent = curr.slice(0, --i);
+      if (i === 0) { deleting = false; ti++; }
+    }
+    setTimeout(tick, deleting ? 50 : 90);
+  }
+  setTimeout(tick, 300);
 }
 
-/* ── EDUCATION ── */
-function Education() {
-  const certs = [
-    { name: 'Salesforce Supported Virtual Internship', issuer: 'Salesforce', year: '2025', icon: '☁️', color: 'from-blue-600 to-cyan-600' },
-    { name: 'Cisco Networking Basics', issuer: 'Cisco', year: '2024', icon: '🌐', color: 'from-teal-600 to-emerald-600' },
-    { name: 'Cisco Computer Hardware Basics', issuer: 'Cisco', year: '2024', icon: '💻', color: 'from-violet-600 to-indigo-600' },
-  ];
-  return (
-    <section id="education" className="py-24 px-6 bg-white/[0.02]">
-      <div className="max-w-4xl mx-auto">
-        <FadeSection>
-          <p className="mono text-indigo-400 mb-2 text-center section-label">{'// academic background'}</p>
-          <h2 className="text-4xl font-bold text-center mb-16">Education & Certifications</h2>
-        </FadeSection>
-        <div className="grid md:grid-cols-2 gap-6">
-          <FadeSection>
-            <div className="gradient-border rounded-2xl bg-white/3 p-6 glow h-full">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-600/30 flex items-center justify-center text-2xl">🎓</div>
-                <div>
-                  <h3 className="font-semibold text-white">BS Information Technology</h3>
-                  <p className="text-indigo-400 text-sm">Bulacan State University</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">🏅 MAGNA CUM LAUDE</span>
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">🏆 Dean's Lister</span>
-              </div>
-              <p className="text-xs text-slate-500 mb-4 mono">2022 – 2026</p>
-              <div className="flex flex-wrap gap-1">
-                {['Database Mgmt','System Analysis','Web Development','Software Engineering','Networking'].map(c => (
-                  <span key={c} className="tag text-[10px]">{c}</span>
-                ))}
-              </div>
-            </div>
-          </FadeSection>
+// ── SCROLL EFFECTS ────────────────────────────────────────────────────
+function initScroll() {
+  const navbar = document.getElementById("navbar");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add("backdrop-blur-xl","border-b");
+      navbar.style.background = "rgba(0,0,0,0.6)";
+      navbar.style.borderColor = "rgba(255,255,255,0.05)";
+    } else {
+      navbar.classList.remove("backdrop-blur-xl","border-b");
+      navbar.style.background = "";
+    }
+  });
 
-          {/* Certifications — enhanced with issuer + colored left bar */}
-          <FadeSection delay={100}>
-            <div className="flex flex-col gap-4">
-              <p className="text-xs text-slate-500 uppercase tracking-widest mono mb-1">Certifications</p>
-              {certs.map((c) => (
-                <div key={c.name} className="gradient-border rounded-xl bg-white/3 glow card-hover overflow-hidden flex">
-                  <div className={`w-1.5 bg-gradient-to-b ${c.color} shrink-0`} />
-                  <div className="flex items-center gap-4 p-4 flex-1">
-                    <div className="w-10 h-10 rounded-lg bg-indigo-600/20 flex items-center justify-center text-xl shrink-0">{c.icon}</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white leading-tight">{c.name}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{c.issuer} · {c.year}</p>
-                    </div>
-                    <span className="text-xs text-green-400 shrink-0 flex items-center gap-1">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>
-                      Verified
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeSection>
-        </div>
-      </div>
-    </section>
-  );
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".section-fade").forEach(el => obs.observe(el));
 }
 
-/* ── CONTACT — added LinkedIn & GitHub ── */
-function Contact() {
-  const contacts = [
-    { icon: '✉️', label: 'Email', value: 'kyleeremielzz@gmail.com', href: 'mailto:kyleeremielzz@gmail.com', desc: 'Best way to reach me' },
-    { icon: '📞', label: 'Phone', value: '0953-4731-458', href: 'tel:+639534731458', desc: 'Available Mon–Fri' },
-    { icon: '📍', label: 'Location', value: 'Calumpit, Bulacan, PH', href: null, desc: 'Open to remote work' },
-    { icon: '💼', label: 'Status', value: 'Open to Opportunities', href: null, desc: 'QA Tester & IT Support roles' },
-  ];
-
-  const socials = [
-    { label: 'GitHub', href: 'https://github.com/kayliremyel', icon: <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg> },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/kyleeremielgarcia', icon: <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
-  ];
-
-  return (
-    <section id="contact" className="py-24 px-6">
-      <div className="max-w-3xl mx-auto">
-        <FadeSection>
-          <p className="mono text-indigo-400 mb-2 text-center section-label">{'// get in touch'}</p>
-          <h2 className="text-4xl font-bold text-center mb-3">Let's Work Together</h2>
-          <p className="text-slate-400 text-center mb-14 text-base">I'm currently open to QA Tester, IT Support, and WordPress/Salesforce-related roles.</p>
-
-          <div className="grid sm:grid-cols-2 gap-5 mb-10">
-            {contacts.map((item, i) => (
-              <FadeSection key={item.label} delay={i * 80}>
-                <div className="contact-card rounded-2xl p-6 h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-600/20 border border-indigo-500/20 flex items-center justify-center text-2xl shrink-0">
-                      {item.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
-                      {item.href
-                        ? <a href={item.href} className="text-base font-semibold text-indigo-400 hover:text-indigo-300 transition-colors break-all">{item.value}</a>
-                        : <p className="text-base font-semibold text-white">{item.value}</p>
-                      }
-                      <p className="text-xs text-slate-600 mt-1">{item.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeSection>
-            ))}
-          </div>
-
-          <FadeSection delay={200}>
-            <div className="text-center">
-              <div className="inline-flex flex-col sm:flex-row gap-4 items-center mb-8">
-                <a href="mailto:kyleeremielzz@gmail.com"
-                  className="hire-btn inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-base cursor-pointer">
-                  ✉️ Send Me an Email
-                </a>
-                <a href="tel:+639534731458"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 hover:text-white font-semibold text-base transition-all hover:bg-indigo-600/10">
-                  📞 Call Me
-                </a>
-              </div>
-
-              {/* Social links row */}
-              <div className="flex gap-4 justify-center mb-8">
-                {socials.map(s => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all text-sm font-medium border border-white/5 hover:border-white/15">
-                    {s.icon} {s.label}
-                  </a>
-                ))}
-              </div>
-
-              <p className="text-slate-600 text-xs mono">© 2026 Kylee Remiel Garcia · Built with React + Tailwind CSS</p>
-            </div>
-          </FadeSection>
-        </FadeSection>
-      </div>
-    </section>
-  );
+// ── MOBILE MENU ───────────────────────────────────────────────────────
+function initMenu() {
+  const btn   = document.getElementById("menu-btn");
+  const menu  = document.getElementById("mobile-menu");
+  const open  = document.getElementById("icon-open");
+  const close = document.getElementById("icon-close");
+  btn.addEventListener("click", () => {
+    const isOpen = !menu.classList.contains("hidden");
+    menu.classList.toggle("hidden");
+    open.classList.toggle("hidden", !isOpen);
+    close.classList.toggle("hidden", isOpen);
+  });
+  document.querySelectorAll(".mobile-link").forEach(l => l.addEventListener("click", () => {
+    menu.classList.add("hidden"); open.classList.remove("hidden"); close.classList.add("hidden");
+  }));
 }
 
-function App() {
-  return (
-    <>
-      <HideLoader/>
-      <Nav/>
-      <Hero/>
-      <Skills/>
-      <Projects/>
-      <Experience/>
-      <Education/>
-      <Contact/>
-    </>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+// ── INIT ──────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  renderSkills();
+  renderProjects();
+  renderExperience();
+  renderCerts();
+  renderContact();
+  typewriter();
+  initScroll();
+  initMenu();
+});
 </script>
 </body>
 </html>
