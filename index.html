@@ -561,8 +561,8 @@ const PROJECTS = [
     tags:["WordPress","Claude AI","Google Gemini","Content Strategy"],
     bg:"linear-gradient(135deg,#059669,#0d9488)", icon:"✍️",
     highlights:["Managed multiple client WordPress sites","AI-assisted content creation and research","Maintained performance and content standards"],
-    link: "https://drive.google.com/drive/u/0/folders/11foXxpbEq25-FsFYKLVAank7oNO8hKW7" , linkLabel:"View Live Site"
-  },
+    link:"https://drive.google.com/drive/u/0/folders/11foXxpbEq25-FsFYKLVAank7oNO8hKW7", linkLabel:"View Work",
+    link2:"https://onespeedservices.com/aurora/air-duct-cleaning/", link2Label:"View Site",
   },
 ];
 
@@ -620,7 +620,9 @@ function renderProjects(){
   PROJECTS.forEach((p,i) => {
     const tags = p.tags.map(t => `<span class="pill pill-neutral" style="font-size:11px">${t}</span>`).join("");
     const hi   = p.highlights.map(h => `<div class="project-highlight">${h}</div>`).join("");
-    const lnk  = p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="project-link">${p.linkLabel}<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>` : "";
+    const mkLink = (url,label) => url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="project-link">${label}<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>` : "";
+    const lnk  = (mkLink(p.link,p.linkLabel) + mkLink(p.link2,p.link2Label));
+    const lnkWrap = (p.link || p.link2) ? `<div style="display:flex;gap:18px;flex-wrap:wrap">${lnk}</div>` : "";
     const card = el("div","project-card fade");
     card.style.transitionDelay = (i*100)+"ms";
     card.innerHTML = `
@@ -634,7 +636,7 @@ function renderProjects(){
         <div class="project-desc">${p.desc}</div>
         <div class="project-highlights">${hi}</div>
         <div class="project-tags">${tags}</div>
-        ${lnk}
+        ${lnkWrap}
       </div>`;
     g.appendChild(card);
   });
